@@ -98,7 +98,7 @@ function POP3Client(port, host, options) {
 
 	// Privileged methods follow
 	this.setCallback = function(cb) { callback = cb; };
-	this.getCallback = function() { return callback };
+	this.getCallback = function() { return callback; };
 	this.setState = function(val) { state = val; };
 	this.getState = function() { return state; };
 	this.setLocked = function(val) { locked = val; };
@@ -223,11 +223,14 @@ function POP3Client(port, host, options) {
 
 		if (checkResp === false) {
 
+			var responseCopy;
+			var bufferedDataCopy;
+
 			if (multiline === true && (response === false || bufferedData.substr(bufferedData.length-5) === "\r\n.\r\n")) {
 
 				// Make a copy to avoid race conditions
-				var responseCopy = response;
-				var bufferedDataCopy = bufferedData;
+				responseCopy = response;
+				bufferedDataCopy = bufferedData;
 
 				response = null;
 				checkResp = true;
@@ -239,8 +242,8 @@ function POP3Client(port, host, options) {
 			} else if (multiline === false) {
 
 				// Make a copy to avoid race conditions
-				var responseCopy = response;
-				var bufferedDataCopy = bufferedData;
+				responseCopy = response;
+				bufferedDataCopy = bufferedData;
 
 				response = null;
 				checkResp = true;
@@ -550,7 +553,7 @@ POP3Client.prototype.list = function(msgnumber) {
 
 				if (msgnumber !== undefined) {
 
-					msgcount = 1
+					msgcount = 1;
 					listitem = data.split(" ");
 					returnValue[listitem[1]] = listitem[2];
 
@@ -559,7 +562,6 @@ POP3Client.prototype.list = function(msgnumber) {
 					var offset = 0;
 					var listitem = "";
 					var newoffset = 0;
-					var returnValue = [];
 					var startOffset = data.indexOf("\r\n", 0) + 2;
 					var endOffset = data.indexOf("\r\n.\r\n", 0) + 2;
 
@@ -618,7 +620,7 @@ POP3Client.prototype.stat = function() {
 
 			if (resp !== false) {
 
-				listitem = data.split(" ");
+				var listitem = data.split(" ");
 				returnValue = {
 
 					"count": listitem[1].trim(),
@@ -666,7 +668,6 @@ POP3Client.prototype.uidl = function(msgnumber) {
 					var offset = 0;
 					var listitem = "";
 					var newoffset = 0;
-					var returnValue = [];
 					var startOffset = data.indexOf("\r\n", 0) + 2;
 					var endOffset = data.indexOf("\r\n.\r\n", 0) + 2;
 

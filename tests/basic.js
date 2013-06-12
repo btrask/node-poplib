@@ -178,7 +178,7 @@ client.on("dele", function(status, msgnumber, data, rawdata) {
 			if (!rset && download) client.retr(currentmsg);
 			else client.dele(currentmsg);
 
-		} else if (rset) client.rset()
+		} else if (rset) client.rset();
 		else  client.quit();
 
 	} else {
